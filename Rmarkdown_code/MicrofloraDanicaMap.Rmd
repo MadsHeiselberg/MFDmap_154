@@ -1,0 +1,107 @@
+---
+title: 
+output:
+  html_document:
+    pagetitle: "Microflora Danica"
+    self_contained: true
+    theme: null
+     
+---
+
+
+<div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+  <img src="AAU_logo_2012.png" style="height:50px; margin-right:2px;margin-left:2px; margin-top:2px; margin-bottom:5px">
+  <h1 style="margin:0;">Microflora Danica</h1>
+</div>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+```
+
+```{r insall packages, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+# List of required packages
+packages <- c(
+  "shiny",
+  "leaflet",
+  "readxl",
+  "dplyr",
+  "glue",
+  "stringr"
+)
+
+# Install any missing packages
+installed <- packages %in% installed.packages()[, "Package"]
+if(any(!installed)){
+  install.packages(packages[!installed], dependencies = TRUE)
+}
+
+# Load all packages
+lapply(packages, library, character.only = TRUE)
+
+```
+
+
+```{r load data, echo=FALSE}
+library(shiny)
+library(leaflet)
+library(readxl)
+library(dplyr)
+library(glue)
+library(stringr)
+
+data <- read.csv("Data/shinyapp_data_done.csv") %>%
+        arrange(desc(genus_type))
+
+
+```
+
+```{r fig.fullpage =TRUE}
+# Bounding box for Denmark (approx: west, south, east, north)
+leaflet(
+  height="90vh", width="100vw",
+  data = data,
+  options = leafletOptions(minZoom = 4, maxZoom = 18)
+) %>%
+  addTiles(
+  attribution = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors |  <a href="https://doi.org/10.1038/s41564-025-02062-z">Data from Sereika et al., 2025, Nature Microbiology</a>'
+  ) %>%
+  fitBounds(lng1 = 7.5, lat1 = 54, lng2 = 16, lat2 = 58.6) %>%
+  #setMaxBounds(lng1 = 7.5, lat1 = 54.5, lng2 = 16, lat2 = 60) %>%
+  addAwesomeMarkers(
+    lat = ~latitude, lng = ~longitude,
+    popup = ~popup_html,
+    clusterOptions = markerClusterOptions(
+      iconCreateFunction = JS("
+        function (cluster) {
+          return new L.DivIcon({
+            html: '<div style=\"background-color:#808080;border-radius:50%;color:white;font-weight:bold;line-height:40px;text-align:center;width:40px;height:40px;\">' + cluster.getChildCount() + '</div>',
+            className: 'marker-cluster',
+            iconSize: new L.Point(40, 40)
+          });
+        }
+      ")
+    ),
+    layerId = ~bin,
+    icon = ~makeAwesomeIcon(
+      icon = "circle",
+      markerColor = ifelse(genus_type == "Y", "orange", "lightgray"),
+      iconColor = "white"
+    )
+  )
+
+
+```
+```{r, echo=FALSE, include=FALSE}
+
+cat('
+<style>
+  html, body { height: 100%; margin: 0; overflow: hidden; }
+  .main-container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  h1.title, .author, .date { display: none !important; }
+  .leaflet, .leaflet-container { height: 100vh !important; width: 100vw !important; }
+</style>
+')
+
+```
+
