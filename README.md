@@ -1,14 +1,33 @@
-Code generates page: https://madsheiselberg.github.io/MFDmap_154/
+🗺️ Microflora Danica Map — Interactive Geographic Visualization
 
-Code structure:
-  index.html -> HTML page for map data that is the page
-  Rmarkdown -> Folder contaning Rmarkdonw code to convert R code to HTML.
-    MicrofloraDanica.Rmd -> The Rmarkdown file generation the map when knitted to HTML
-    process_data.R -> R File which filtes and cleans the Manually currated datafile from the paper.
-    Data/
-      "41564_2025_2062_MOESM3_ESM.xls" -> Raw data from Paper containg naming, and GPS coordinates
-      "data_clean_bynavnetjek.csv" -> manually check transtaled Danish city names from english to Danish
-      "shinyapp_data_done.csv" -> The datafile used for the map in the Rmarkdown file.
+Live map: https://madsheiselberg.github.io/MFDmap_154/
+
+An interactive map visualizing the geographic distribution of Microflora Danica sampling locations.
+This repository contains the code and data processing pipeline that transforms the raw supplementary data from the manuscript into a clean dataset and a rendered HTML map.
+
+✨ Features
+
+🌍 Interactive map built with R Markdown
+
+🧹 Data cleaning pipeline for manually curated location naming
+
+📍 Accurate GPS visualization of sample origins
+
+📦 Automatically deployed via GitHub Pages
+
+📁 Repository Structure
+├── index.html                # Main HTML webpage containing the interactive map
+│
+├── Rmarkdown/                # RMarkdown-based map generation
+│   ├── MicrofloraDanica.Rmd  # Primary RMarkdown file generating the map
+│   ├── process_data.R        # Filters + cleans raw data into final map-ready dataset
+│   │
+│   └── Data/
+│       ├── 41564_2025_2062_MOESM3_ESM.xls     # Raw data from publication (locations + metadata)
+│       ├── data_clean_bynavnetjek.csv         # Manually verified Danish city name translations
+│       └── shinyapp_data_done.csv             # Final cleaned dataset used in map rendering
+│
+└── README.md
 
 📄 Licens og ophavsret
 
