@@ -1,3 +1,15 @@
+Code generates page: https://madsheiselberg.github.io/MFDmap_154/
+
+Code structure:
+  index.html -> HTML page for map data that is the page
+  Rmarkdown -> Folder contaning Rmarkdonw code to convert R code to HTML.
+    MicrofloraDanica.Rmd -> The Rmarkdown file generation the map when knitted to HTML
+    process_data.R -> R File which filtes and cleans the Manually currated datafile from the paper.
+    Data/
+      "41564_2025_2062_MOESM3_ESM.xls" -> Raw data from Paper containg naming, and GPS coordinates
+      "data_clean_bynavnetjek.csv" -> manually check transtaled Danish city names from english to Danish
+      "shinyapp_data_done.csv" -> The datafile used for the map in the Rmarkdown file.
+
 📄 Licens og ophavsret
 
 Dette projekt anvender Leaflet, et open source JavaScript-bibliotek and leaflet R package from the  til interaktive kort.
